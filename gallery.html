@@ -76,6 +76,7 @@
 				margin-right: 0;
 				margin-left: auto;
 				margin-bottom: 1rem;
+				padding: 0;
 			}
 			dialog>img {
 				width: 100%;
@@ -215,6 +216,7 @@
 						mousepos = { x: e.touches.item(0).clientX, y: e.touches.item(0).clientY };
 						distance = 0;
 					} else if (e.touches.length == 2)  {
+						e.preventDefault();
 						const pos1 = { x: e.touches.item(0).clientX, y: e.touches.item(0).clientY };
 						const pos2 = { x: e.touches.item(1).clientX, y: e.touches.item(1).clientY };
 						distance = sqrt((pos1.x - pos2.x) ** 2 + (pos1.y - pos2.y) ** 2);
@@ -226,6 +228,7 @@
 						distance = 0;
 						move({ x: e.touches.item(0).clientX, y: e.touches.item(0).clientY });
 					} else if (e.touches.length == 2) {
+						e.preventDefault();
 						const pos1 = { x: e.touches.item(0).clientX, y: e.touches.item(0).clientY };
 						const pos2 = { x: e.touches.item(1).clientX, y: e.touches.item(1).clientY };
 						const newDistance = sqrt((pos1.x - pos2.x) ** 2 + (pos1.y - pos2.y) ** 2);
@@ -242,7 +245,7 @@
 					}
 				})
 				dialog.addEventListener('touchend', (e) => {
-					if (e.touches.lengh == 1) {
+					if (e.touches.length == 1 || e.touches.length == 2) {
 						e.preventDefault();
 						mousepos = null;
 					}
