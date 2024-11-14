@@ -1,7 +1,7 @@
 # redbirdracing.github.io
 
-This is my version of the website
-Except the content, my version is basically completed. I completely rewrote the website, but the site structure is not changed.
+This is my version of the website.
+Except the content, it is basically completed. I completely rewrote the website, but the site structure is not changed.
 
 Notes:
 1. **I did NOT update the content because I have no idea what events, photos, or news I can put on the website, except the 8 selected photos**
