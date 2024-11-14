@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="assets/js/components.js" type="module"></script>
+	<link rel="stylesheet" href="/assets/css/main.css">
+	<link rel="icon" type="image/png" href="favicon.png" />
+
+	<title>Partners | HKUST Red Bird Racing (EVRT)</title>
+</head>
+
+<body>
+	<page-layout>
+		<style>
+			.sponsor-tier {
+				display: flex; align-items: center;
+			}
+			.sponsor-tier > hr {
+				width: 100%; height: 0; border: .5px solid var(--border-color);
+			}
+			.sponsor-tier > h2 {
+				margin: 1rem 1rem;
+				white-space: nowrap;
+				font-size: larger;
+				letter-spacing: 1px;
+			}
+
+			/* https://stackoverflow.com/questions/14072142/striped-text-in-css */
+			.striped {
+				background-size: 16px;
+				background-clip: text;
+				color: transparent;
+				background-color: rgb(255, 255, 255);
+				background-image: -webkit-linear-gradient(45deg, rgba(0, 0, 0, .2) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, .2) 50%, rgba(0, 0, 0, .2) 75%, transparent 75%, transparent);
+			}
+
+			.sponsors-container {
+				display: flex;
+				justify-content: center;
+				gap: 1rem;
+				flex-wrap: wrap;
+				width: 100%;
+				padding: 1rem 0;
+			}
+			.sponsors-container:not(:last-child) {
+				margin-bottom: 2rem;
+			}
+			.image {
+				display: flex;
+				width: 160px;
+				flex-direction: column;
+				align-items: center;
+				padding-top: 1rem;
+			}
+			.image {
+				width: calc((100% - 3rem) / 3);
+			}
+			@media screen and (max-width: 700px) {
+				.image {
+					width: calc((100% - 2rem) / 2);
+				}
+			}
+			@media screen and (max-width: 390px) {
+				.image {
+					width: 100%;
+				}
+				.sponsors-container {
+					flex-direction: column;
+				}
+			}
+			.image>img {
+				border-radius: 9999px;
+				overflow: hidden;
+			}
+			a.image:hover>span {
+				text-decoration: underline;
+			}
+			.image>span {
+				font-weight: 600;
+				letter-spacing: 1px;
+				text-align: center;
+				margin-top: 1rem;
+				line-height: 1.4rem;
+			}
+		</style>
+
+		<span slot="title">
+			Partners
+		</span>
+		<span slot="description">
+			Thank you for all our partners for supporting our activities.
+		</span>
+
+		<div class="content">
+			<div class="sponsor-tier">
+				<hr>
+				<h2 class="striped" style="background-color: #ffffff;">Platinum Sponsors</h2>
+				<hr>
+			</div>
+			<div id="platinum" class="sponsors-container"></div>
+
+			<div class="sponsor-tier">
+				<hr>
+				<h2 class="striped" style="background-color: #efdb03;">Gold Sponsors</h2>
+				<hr>
+			</div>
+			<div id="gold" class="sponsors-container"></div>
+
+			<div class="sponsor-tier">
+				<hr>
+				<h2 style="color: #cacaca">Silver Sponsors</h2>
+				<hr>
+			</div>
+			<div id="silver" class="sponsors-container"></div>
+
+			<div class="sponsor-tier">
+				<hr>
+				<h2 style="color: #f58e09">Bronze Sponsors</h2>
+				<hr>
+			</div>
+			<div id="bronze" class="sponsors-container"></div>
+		</div>
+
+		<script type="module">
+			/**
+			 * @typedef SponsorEntry
+			 * @type {object}
+			 * @property {string} image
+			 * @property {string} name
+			 * @property {string | null} link
+			 */
+			
+			/**
+			 * @type {{
+			 *     platinum: SponsorEntry[];
+			 *     gold: SponsorEntry[];
+			 *     silver: SponsorEntry[];
+			 *     bronze: SponsorEntry[];
+			 * }}
+			 */
+			const sponsors = await (await fetch('/assets/js/sponsors.json')).json();
+			/** @type {keyof sponsors} */
+			const tiers = ["platinum", "gold", "silver", "bronze"];
+
+			for (const tier of tiers) {
+				const el = document.getElementById(tier);
+				for (const child of [...el.childNodes]) {
+					el.removeChild(child);
+				}
+				/** @type {SponsorEntry[]} */
+				const list = sponsors[tier];
+				for (const sponsor of list) {
+					/** @type {HTMLAnchorElement | HTMLDivElement} */
+					let container;
+					if (sponsor.link) {
+						container = document.createElement('a');
+						container.href = sponsor.link;
+						container.style.textDecoration = "none";
+					} else {
+						container = document.createElement('div');
+					}
+					container.classList.add('image');
+
+					const img = document.createElement('img');
+					img.src = sponsor.image;
+					img.alt = `Logo of ${sponsor.name}`;
+					img.height = 128;
+					container.appendChild(img);
+
+					const span = document.createElement('span');
+					span.textContent = sponsor.name;
+					container.appendChild(span);
+
+					el.appendChild(container);
+				}
+			}
+		</script>
+	</page-layout>
+</body>
+</html>

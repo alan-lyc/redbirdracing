@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="/assets/js/components.js" type="module"></script>
+	<script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1.5.0/lite-youtube.js"></script>
+	<link rel="stylesheet" href="/assets/css/main.css">
+	<link rel="icon" type="image/png" href="favicon.png" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" />
+	<title>HKUST Red Bird Racing (EVRT)</title>
+</head>
+
+<body>
+	<page-layout>
+		<style>
+			@media screen and (max-width: 456px) {
+				#logo {
+					height: 256px;
+					width: 256px;
+				}
+			}
+
+			#background-image {
+				width: 100%;
+				object-fit: cover;
+				filter: brightness(50%);
+			}
+
+			#header-container {
+				position: absolute;
+				height: 512px;
+				width: 100dvw;
+				top: 0;
+			}
+
+			#header-container-inner {
+				display: flex;
+				flex-direction: column;
+				height: 100%;
+				padding: var(--content-padding);
+				margin: 0 auto;
+				max-width: var(--max-content-width);
+			}
+
+			h1 {
+				letter-spacing: 2px;
+				margin-top: -2rem;
+			}
+			h2 {
+				margin-top: 2rem;
+			}
+
+			#header-description {
+				font-weight: 600;
+				opacity: .8;
+				font-style: italic;
+				letter-spacing: 1px;
+				line-height: 1.4rem;
+			}
+
+			.button-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 1rem;
+				border: 1px solid white;
+				padding: .5rem 1rem;
+				border-radius: 8px;
+				text-decoration: none;
+			}
+
+			#featured {
+				display: flex;
+				overflow: scroll;
+			}
+			.card {
+				display: flex;
+				border-radius: 8px;
+				overflow: hidden;
+				flex-direction: column;
+				margin: 0 .5rem;
+				cursor: pointer;
+			}
+			.card:first-child {
+				margin-left: 0;
+			}
+			.card:last-child {
+				margin-right: 0;
+			}
+			.card-content {
+				background-color: black;
+				padding: 1.5rem;
+				flex-grow: 1;
+				display: flex;
+				flex-direction: column;
+			}
+			.card-content > hr {
+				width: 100%;
+				border: .5px solid var(--border-color);
+			}
+			.card-content > p {
+				flex-grow: 1;
+			}
+			.card-content > a {
+				display: flex;
+				margin-left: auto;
+				margin-right: 0;
+				text-decoration: none;
+				align-items: center;
+				width: fit-content;
+				gap: .5rem;
+			}
+
+			.card[data-type="image"]:hover > .card-content,
+			.card[data-type="youtube"] > .card-content:hover {
+				transition: background-color ease-in-out 200ms;
+				background-color: #000000bb;
+			}
+			.card[data-type="image"]:hover > .card-content > a,
+			.card[data-type="youtube"] > .card-content:hover > a {
+				text-decoration: underline;
+			}
+		</style>
+		<div slot="header" style="position: relative;">
+			<img id="background-image" role="presentation" src="/assets/images/1080p/_ECA0989.JPG" height="512" />
+			<div id="header-container">
+				<div id="header-container-inner">
+					<img id="logo" alt="HKUST Red Bird Racing logo" src="/assets/images/logo.720p.png" width="320"
+						height="320">
+					<h1>HKUST Red Bird Racing (EVRT)</h1>
+					<hr style="border: 1px solid var(--border-color); width: 100%;">
+					<p id="header-description">The Official Formula Student Racing Team of The Hong Kong University of
+						Science and Technology.</p>
+				</div>
+			</div>
+			<div style="position: fixed; width: 100dvw; top: 0; z-index: 9999;">
+				<page-layout-header home-page></page-layout-header>
+			</div>
+		</div>
+		<div class="content">
+			<h2>About Us</h2>
+			<p>
+				Originated as an experimental project in 2017, Red Bird Racing (EVRT) became the official student racing
+				team of HKUST. The team actively participates in Formula Students, one of the most established
+				engineering competitions in the world. Through this competition, the team aims to develop the knowledge
+				and skills of aspiring engineers to succeed in their careers.
+			</p>
+			<a href="about.html" class="button-link">
+				Learn More
+				<chevron-right style="width: 20px; height: 20px;"></chevron-right>
+			</a>
+			<h2>Featured</h2>
+			<style>
+				
+			</style>
+			<div id="featured"></div>
+		</div>
+
+		<script type="module">
+			// makes the top menu bar appear when users scroll past the logo,
+			// just before the h1 occupy the space of the top menu bar
+			document.addEventListener('scroll', () => {
+				const header = document.querySelector('page-layout-header');
+				/** @type {number} */
+				const headerHeight = header.height;
+				//                        *----------*
+				//                        |          |
+				//                       *------------*
+				// header's height --> [ |||||||||||||| ]
+				//                       |            | | <-- h1 clientRect's top
+				//                       |            | ]
+				//                       | HKUST RBR  | <-- h1
+				//                       |            |
+				//                       |            |
+				//                       |            |
+				//                       *------------*
+				//                        |          |
+				//                        |          |
+				//                        *----------*
+				// 
+				if (document.querySelector('h1').getBoundingClientRect().top - 20 <= headerHeight + 16) {
+					// the h1 is close enough to the header, and we can no longer see the logo
+					// so we show the entire header
+					document.querySelector('page-layout-header').removeAttribute('home-page');
+				} else {
+					document.querySelector('page-layout-header').setAttribute('home-page', '');
+				}
+			})
+
+			// populates the Featured section
+			/**
+			 * @typedef ImageThumbnail
+			 * @type {object}
+			 * @property {"image"} type
+			 * @property {string} link
+			 * @property {string} alt
+			 */
+			/**
+			 * @typedef YouTubeThumbnail
+			 * @type {object}
+			 * @property {"youtube"} type
+			 * @property {string} link
+			 */
+			/**
+			 * @typedef FeaturedEntry
+			 * @type {object}
+			 * @property {ImageThumbnail | YouTubeThumbnail} thumbnail
+			 * @property {string} title
+			 * @property {string} descriptiion
+			 * @property {string} link
+			 */
+
+			// const res = await fetch('/assets/js/featured.json');
+			const json = await (await fetch('/assets/js/featured.json')).json();
+			/** @type {FeaturedEntry[]} */
+			const featured = json.featured;
+			const featuredNewsContainer = document.getElementById('featured');
+
+			for (const news of featured) {
+				// <div class="card">
+				//   <img ...>
+				//   <h3>title</h3>
+				//   <p>description</p>
+				// </div>
+				//
+				// -- or --
+				//
+				// <div class="card">
+				//   <iframe src="https://www.youtube.com/embed/..." ...></iframe>
+				//   <h3>title</h3>
+				//   <p>description</p>
+				// </div>
+
+				const thumbnailWidth = 288;
+				// the default aspect ratio for the youtube embedded player
+				const thumbnailHeight = thumbnailWidth * 315/560;
+
+				const container = document.createElement('div');
+				container.dataset.type = news.thumbnail.type;
+				container.classList.add('card');
+				container.style.minWidth = `${thumbnailWidth}px`;
+				
+				/** @type {HTMLIFrameElement | HTMLImageElement} */
+				let thumbnail;
+				if (news.thumbnail.type == "image") {
+					thumbnail = document.createElement('img');
+					thumbnail.src = news.thumbnail.link;
+					thumbnail.alt = news.thumbnail.alt;
+					thumbnail.width = thumbnailWidth;
+					thumbnail.height = thumbnailHeight
+					thumbnail.style.objectFit = "cover";
+				} else {
+					// youtube embed player + facade
+					const player = document.createElement('lite-youtube');
+					player.setAttribute('videoid', new URL(news.thumbnail.link).searchParams.get('v'))
+					thumbnail = player;
+				}
+
+				const innerContainer = document.createElement('div');
+				innerContainer.classList.add('card-content');
+
+				const title = document.createElement('h3');
+				title.textContent = news.title;
+
+				const description = document.createElement('p');
+				description.textContent = news.description;
+
+				const a = document.createElement('a');
+				a.href = news.link;
+				if (news.thumbnail.type == "youtube") {
+					a.innerHTML = `
+						Watch
+						<svg aria-label="learn more" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+					`;
+					a.target = "_blank";
+				} else {
+					a.textContent = "Learn More";
+					const chevron = document.createElement('chevron-right');
+					chevron.style.height = "20px"
+					a.appendChild(chevron);
+				}
+
+				innerContainer.append(title, document.createElement('hr'), description, a);
+				container.append(thumbnail, innerContainer);
+				featuredNewsContainer.appendChild(container);
+
+				// if the card is clicked at places other than the <iframe> and the link,
+				// we programmatically click the link to go to the page
+				container.addEventListener('click', (e) => {
+					if (e.target.tagName.toLowerCase() == "lite-youtube" || e.target instanceof HTMLIFrameElement || e.target instanceof HTMLAnchorElement) return;
+					a.click();
+				})
+			}
+		</script>
+	</page-layout>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+{
+	"WARNING": [
+		"please sort this by date, newest first",
+		"this is because the date might not be machine readable, e.g. 1-5 Dec 2021",
+		"it is not impossible to use a start and end date to represent a time period", 
+		"and then format dates in the ISO 8601",
+		"but then we would have to decide on how to format the time period",
+		"and also how to sort if the [start, end] time period overlap with other date",
+		"",
+		"also yes, json does not support comments"
+	],
+	"news": [
+		{
+			"date": "14 Oct 2022",
+			"title": "New Member Orientation Day 2022",
+			"link": "/news/orientation2022.html"
+		},
+		{
+			"date": "14 Sep 2022",
+			"title": "Member Recruitment 2022-23 **(ENDED)**",
+			"link": "/news/recruitment.html"
+		},
+		{
+			"date": "30 Aug 2022",
+			"title": "Hong Kong Inter-University Formula Student Alliance",
+			"link": "/news/fshk.html"
+		},
+		{
+			"date": "13 Jun 2022",
+			"title": "Small Announcement",
+			"link": "/news/small_announcement.html"
+		},
+		{
+			"date": "28 Jan 2022",
+			"title": "Gen 3 Road Test",
+			"link": "https://www.youtube.com/watch?v=jQWMarzjAxI"
+		},
+		{
+			"date": "1-5 Dec 2021",
+			"title": "International MotorXpo Hong Kong 2021",
+			"link": "https://www.imxhk.com/"
+		},
+		{
+			"date": "4 Aug 2021",
+			"title": "Formula Student UK 2021 Awards",
+			"link": "https://mae.hkust.edu.hk/en/news-events/news/detail/2021/20210804-mae-students-in-red-bird-racing-evrt-won-the-lap-time-simulation-event-award-and-the-sim-racing-winner-in-the-concept-class-of-the-fsuk-2021"
+		}
+	]
+}

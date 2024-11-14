@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" href="/assets/css/dialog-polyfill.css">
+
+<style>
+	@import url('/assets/css/main.css');
+
+	button {
+		cursor: pointer;
+	}
+
+	a {
+		color: white;
+	}
+
+	#header {
+		position: fixed;
+		width: 100dvw;
+		display: flex;
+		height: var(--header-height);
+		padding: 0px 1rem;
+		justify-content: space-between;
+		align-items: center;
+		background-color: black;
+	}
+
+	#header[data-is-home-page]>#header-left * {
+		display: none;
+	}
+
+	#header[data-is-home-page] {
+		background-color: transparent;
+	}
+
+	#header-sitemap>* {
+		text-decoration: none;
+		padding: 0rem .75rem;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		border-bottom-width: 0.01px;
+		border-bottom-style: solid;
+		border-bottom-color: transparent;
+		transition-property: background-color, border-bottom-width, border-bottom-color;
+		transition-timing-function: ease-in-out;
+		transition-duration: 200ms;
+	}
+
+	#header-sitemap>a:hover {
+		background-color: #ffffff33;
+		border-bottom-width: 4px;
+		border-bottom-color: rgb(188, 27, 27);
+	}
+
+	#header-sitemap>span {
+		background-color: rgb(39, 0, 0);
+		border-bottom-width: 4px;
+		border-bottom-color: var(--background-color);
+	}
+
+	#header-left,
+	#header-right {
+		display: flex;
+		align-items: center;
+		height: 100%;
+	}
+
+	@media screen and (max-width: 340px) {
+		#header-left>a>img {
+			height: 20px;
+		}
+
+		#header-left>a>div>img:first-child {
+			height: 12px;
+		}
+
+		#header-left>a>div>img:nth-child(2) {
+			height: 6px;
+		}
+	}
+
+	#contact-us {
+		text-decoration: none;
+		padding: .5rem 1rem;
+		border-radius: .5rem;
+		border: 1px solid white;
+	}
+
+	#contact-us:hover {
+		background-color: rgb(39, 39, 39);
+		transition: background-color ease-in-out 200ms;
+	}
+
+	#header-hamburger {
+		display: none;
+	}
+
+	#header-sitemap-contact-us {
+		display: none;
+	}
+
+	#sidebar-sitemap {
+		display: none;
+	}
+
+	@media screen and (max-width: 872px) {
+		#header-sitemap {
+			display: none;
+		}
+
+		#sidebar-sitemap[open] {
+			position: absolute;
+			display: block;
+			position: absolute;
+			top: 0px;
+			bottom: 0px;
+			height: 100dvh;
+			max-height: 100dvh !important;
+			margin: 0px;
+			transition-property: left;
+			transition-duration: 200ms;
+			transition-timing-function: ease-in-out;
+			background-color: rgb(0, 0, 0);
+			border: none;
+			/* box-shadow: 5px 0px 5px rgb(70, 25, 19); */
+			padding: 0;
+		}
+
+		#sidebar-sitemap::backdrop {
+			background-color: rgba(43, 8, 8, 0.4);
+		}
+
+		#sidebar-sitemap+.backdrop {
+			background-color: rgba(43, 8, 8, 0.4);
+		}
+
+		#sidebar-sitemap>nav {
+			display: flex;
+			flex-direction: column;
+			color: white;
+			height: 100%;
+			padding: 2rem 0;
+		}
+
+		#sidebar-back-button {
+			appearance: none;
+			background-color: transparent;
+			border-radius: .5rem;
+			height: 36px;
+			width: 36px;
+			border: none;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			margin-left: 2rem;
+			margin-bottom: .5rem;
+			padding: 0;
+		}
+
+		#sidebar-sitemap>nav>a,
+		#sidebar-sitemap>nav>span {
+			display: block;
+			margin: .25rem 0;
+			padding: .75rem 2.5rem;
+			font-size: large;
+			border-right-width: .01px;
+			border-right-style: solid;
+			border-right-color: transparent;
+			transition-property: border-right-width, background-color;
+			transition-duration: 200ms;
+			transition-timing-function: ease-out;
+		}
+
+		#sidebar-sitemap>nav>span {
+			background-color: rgba(40, 10, 10);
+			border-right-width: 4px;
+			border-right-color: var(--background-color);
+		}
+
+		#sidebar-sitemap>nav>a:hover {
+			background-color: rgb(39, 39, 39);
+			border-right-width: 4px;
+			border-right-color: rgb(188, 27, 27);
+		}
+
+		@keyframes background-darken {
+			0% {
+				background-color: rgba(0, 0, 0, 0);
+			}
+
+			100% {
+				background-color: rgba(0, 0, 0, 0.4);
+			}
+		}
+
+		#contact-us {
+			display: none;
+		}
+
+		#header-hamburger {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			appearance: none;
+			background-color: transparent;
+			border: none;
+			color: white;
+			border-radius: .5rem;
+			height: 36px;
+			width: 36px;
+			padding: 0;
+		}
+
+		#header-hamburger:hover {
+			background-color: #ffffff33;
+		}
+	}
+
+	@media screen and (min-width: 873px) {
+		#header-sitemap {
+			position: sticky;
+			display: flex;
+			height: 100%;
+		}
+	}
+
+	#red-bird-racing {
+		display: inline-block;
+		font-weight: 900;
+		font-size: 2.5rem;
+		text-shadow:
+			.75px .75px 0 #fff,
+			-.75px .75px 0 #fff,
+			-.75px -.75px 0 #fff,
+			.75px -.75px 0 #fff;
+		font-family: 'Iceland', sans-serif;
+		letter-spacing: -4px;
+	}
+
+	#hkust-ev-racing-team {
+		display: inline-block;
+		font-size: .75rem;
+		font-weight: 600;
+		margin-left: .5rem;
+		transform: translateY(1.5px);
+	}
+
+	@media screen and (max-width: 448px) {
+		#red-bird-racing {
+			font-size: 2rem;
+			letter-spacing: -3px;
+		}
+
+		#hkust-ev-racing-team {
+			display: inline-block;
+			font-size: .625rem;
+			font-weight: 600;
+			margin-left: .5rem;
+			transform: translateY(2px);
+		}
+	}
+</style>
+
+<!-- yes, we are using a dialog for a side bar. the aim is to trap focus in supported browser -->
+<dialog id="sidebar-sitemap" style="width: 210px; left: -210px; position: fixed;">
+	<nav>
+		<button id="sidebar-back-button">
+			<svg aria-label="back" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+				fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+				class="lucide lucide-chevron-left">
+				<path d="m15 18-6-6 6-6" />
+			</svg>
+		</button>
+		<a href="/about.html">About Us</a>
+		<a href="/gallery.html">Gallery</a>
+		<a href="/news.html">News</a>
+		<a href="/partners.html">Partners</a>
+		<a href="/contact.html">Contact Us</a>
+	</nav>
+</dialog>
+
+<header id="header">
+	<div id="header-left">
+		<a href="/" style="display: flex; align-content: center; margin-right: 1rem;" aria-label="Home">
+			<img src="/assets/images/red.png" role="presentation" height="24">
+			<img src="/assets/images/bird.png" role="presentation" height="24" style="margin-left: -4px;">
+			<div style="height: 20px; display: flex; flex-direction: column; gap: 4px;">
+				<img src="/assets/images/racing.png" role="presentation" height="14">
+				<img src="/assets/images/hkust-ev-racing-team.png" role="presentation" height="8">
+			</div>
+		</a>
+	</div>
+
+	<div id="header-right">
+		<nav id="header-sitemap">
+			<a href="/about.html">About Us</a>
+			<a href="/gallery.html">Gallery</a>
+			<a href="/news.html">News</a>
+			<a href="/partners.html">Partners</a>
+			<a href="/contact.html">Contact Us</a>
+		</nav>
+		<button id="header-hamburger" title="Open Menu">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+				stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+				class="lucide lucide-menu">
+				<line x1="4" x2="20" y1="12" y2="12" />
+				<line x1="4" x2="20" y1="6" y2="6" />
+				<line x1="4" x2="20" y1="18" y2="18" />
+			</svg>
+		</button>
+	</div>
+</header>

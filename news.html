@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="/assets/js/components.js" type="module"></script>
+	<link rel="stylesheet" href="/assets/css/main.css">
+	<link rel="icon" type="image/png" href="favicon.png" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" />
+	<title>News | HKUST Red Bird Racing (EVRT)</title>
+</head>
+
+<body>
+	<page-layout>
+		<style>
+			.table-row {
+				border-bottom: 1px solid rgba(128, 128, 128, 0.45);
+				text-align: left;
+			}
+
+			.table-cell-padding {
+				padding: 1rem;
+			}
+
+			#table-head {
+				border-bottom: 1px solid rgba(255, 255, 255, .1);
+				text-align: left;
+				font-size: small;
+			}
+
+			.table-row:nth-child(odd) {
+				background: var(--table-alternate-color);
+			}
+
+			@media screen and (max-width: 480px) {
+				#table-head {
+					font-size: smaller;
+				}
+
+				.table-row * {
+					font-size: small;
+				}
+			}
+
+			#sort-dialog>button {
+				background-color: transparent;
+				border-radius: .5rem;
+				/* border: 2px solid white; */
+				padding: .5rem 1rem;
+				font-weight: 600;
+			}
+
+			#sort {
+				background-color: transparent;
+				border: none;
+				font-size: 1rem;
+				display: inline-flex;
+				align-items: center;
+				gap: .25rem;
+				margin-bottom: .25rem;
+			}
+
+			#sort-method {
+				background-color: transparent;
+				color: rgb(0, 195, 255);
+				border: none;
+				font-size: medium;
+				appearance: none;
+				padding: .125rem .25rem;
+			}
+
+			@media screen and (max-width: 512px) {
+				.subheading {
+					font-size: medium;
+				}
+				#sort > span {
+					display: none;
+				}
+			}
+		</style>
+
+		<span slot="title">
+			News
+		</span>
+		<span slot="description">
+			All our recent activities
+		</span>
+
+		<!-- Content -->
+		<div class="content">
+			<section>
+				<div style="display: flex; justify-content: space-between;">
+					<h3 class="subheading" style="margin: 0;">What we've been up to</h3>
+					<label id="sort">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+							stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+							class="lucide lucide-list-filter">
+							<path d="M3 6h18" />
+							<path d="M7 12h10" />
+							<path d="M10 18h4" />
+						</svg>
+						<span style="font-size: small; font-weight: 600;">Sort By:</span>
+						<select id="sort-method">
+							<option value="normal">Newest First</option>
+							<option value="reverse">Oldest First</option>
+						</select>
+					</label>
+				</div>
+				<div class="table-wrapper">
+					<table style="border-collapse: collapse; width: 100%;">
+						<thead>
+							<tr id="table-head">
+								<th style="padding: .75rem 1rem;">Date</th>
+								<th style="padding: .5rem 1rem;">Title</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody id="news-table">
+							<tr>
+								<td class="table-cell-padding" colspan="2"
+									style="text-align: center; color: #ffffffbb;">There is
+									no news yet, check back later!</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.7/purify.min.js"
+			integrity="sha512-BdRNuI8/lsyxkKQVxK1lVtfZshggfXPAwEP+JAOJEKx6Y8SLfcBSRdaWyXQmMxo+wG180uFqXYGjGRL0mh4/Jw=="
+			crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+		<link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+		<script type="module">
+			/**
+			 * @typedef NewsEntry
+			 * @type {object}
+			 * @property {string} date - date of news.
+			 * @property {string} title - title of news.
+			 * @property {string} link - link to details.
+			 */
+			import dialogPolyfill from "/assets/js/dialog-polyfill.esm.js";
+
+			const newsJSON = await (await fetch('/assets/js/news.json')).json();
+			const url = new URL(document.location.href);
+			let sortOldestFirst = url.searchParams.get('sort') == 'reverse';
+
+			/** @type {NewsEntry[]} */
+			const newsEntries = [...newsJSON.news];
+			/** @type {HTMLTableSectionElement} */
+			const table = document.getElementById("news-table");
+
+			if (sortOldestFirst) {
+				newsEntries.reverse();
+			}
+
+			function domify(html) {
+				const fragment = new DocumentFragment();
+				fragment.innerHTML = html;
+				return fragment;
+			}
+
+			if (newsEntries.length) {
+				// deletes the "no news yet" row
+				[...table.childNodes].forEach((c) => table.removeChild(c));
+
+				for (const news of newsEntries) {
+					// looks like:
+					// <tr class="table-row">
+					// 	<td class="table-cell-padding"></td>
+					// 	<td class="table-cell-padding" style="cursor: pointer;"></td>
+					// 	<td class="table-cell-padding">
+					// 		<a style="display: flex; align-items: center; justify-content: center;"></a>
+					// 	</td>
+					// </tr>
+					const tr = document.createElement('tr');
+					tr.classList.add('table-row');
+
+					const date = document.createElement('td');
+					date.textContent = news.date;
+					date.classList.add('table-cell-padding');
+
+					const title = document.createElement('td');
+					title.classList.add('table-cell-padding');
+					title.innerHTML = DOMPurify.sanitize(marked.parse(news.title));
+					title.replaceChildren(...[...title.firstElementChild.childNodes]);
+
+					const link = document.createElement('td')
+
+					const a = document.createElement('a');
+					a.href = news.link;
+					if (new URL(a.href).origin == document.location.origin) {
+						// chevron right symbol
+						a.innerHTML = `<svg aria-label="learn more" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>`
+					} else {
+						// external link symbol
+						a.innerHTML = `<svg aria-label="learn more" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>`
+						a.target = "_blank"
+					}
+					
+					a.style.display = "flex";
+					a.style.alignItems = "center";
+					a.style.justifyContent = "center";
+					a.classList.add('table-cell-padding');
+
+					link.appendChild(a);
+					tr.appendChild(date);
+					tr.appendChild(title);
+					tr.appendChild(link);
+					table.appendChild(tr);
+
+					title.style.cursor = "pointer";
+					title.addEventListener('click', () => a.click());
+				}
+			}
+
+			document.getElementById("sort-method").addEventListener('change', (e) => {
+				if (e.target instanceof HTMLSelectElement) {
+					if (e.target.value == "reverse") {
+						url.searchParams.set('sort', 'reverse');
+						// document.getElementById('sort-method').querySelector(`[value="reverse"]`).selected = true;
+						e.target.value = "normal"
+					} else {
+						url.searchParams.delete('sort')
+						e.target.value = "reverse"
+						// document.getElementById('sort-method').querySelector(`[value="normal"]`).selected = true;
+					}
+					document.location.href = url.href;
+				}
+			})
+			
+			if (url.searchParams.get('sort') == 'reverse') {
+				document.getElementById('sort-method').querySelector(`[value="reverse"]`).selected = true;
+			} else {
+				document.getElementById('sort-method').querySelector(`[value="normal"]`).selected = true;
+			}
+		</script>
+	</page-layout>
+</body>
+
+</html>

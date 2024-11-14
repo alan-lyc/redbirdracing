@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="assets/js/components.js" type="module"></script>
+	<link rel="stylesheet" href="/assets/css/main.css">
+	<link rel="icon" type="image/png" href="favicon.png" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" />
+	<title>Gallery | HKUST Red Bird Racing (EVRT)</title>
+</head>
+<body>
+	<page-layout>
+		<style>
+			.content {
+				display: flex;
+				flex-wrap: wrap;
+				/* justify-content: center; */
+			}
+			
+			.preview {
+				/* border-radius: 8px; */
+				background-color: transparent;
+				appearance: none;
+				padding: 0;
+				overflow: hidden;
+				border: none;
+				--image-height: 196px;
+				height: var(--image-height);
+			}
+			.preview {
+				width: calc((100% - 3rem) / 3);
+			}
+			@media screen and (max-width: 700px) {
+				.preview {
+					width: calc((100% - 2rem) / 2);
+				}
+			}
+			@media screen and (max-width: 480px) {
+				.preview {
+					height: 128px;
+				}
+			}
+
+			.preview>img {
+				width: 100%;
+				object-fit: cover;
+			}
+
+
+			dialog[open] {
+				position: fixed;
+				height: 100dvh;
+				width: 100dvw;
+				max-height: 100dvh;
+				max-width: 100dvw;
+				margin: 0;
+				background-color: rgba(23, 4, 4, 0.6);
+				border: none;
+				display: flex;
+				align-items: flex-end;
+				flex-direction: column;
+				justify-content: center;
+			}
+			dialog>button {
+				display: flex;
+				align-items: center;
+				height: 32px;
+				width: 32px;
+				min-height: 32px;
+				min-width: 32px;
+				background-color: black;
+				border: 1px solid white;
+				border-radius: 8px;
+				margin-right: 0;
+				margin-left: auto;
+				margin-bottom: 1rem;
+			}
+			dialog>img {
+				width: 100%;
+				max-width: 100%;
+				max-height: 100%;
+				object-fit: contain;
+				object-position: center;
+				flex-grow: 1;
+				min-height: 0;
+				transform: translateX(var(--translate-x)) translateY(var(--translate-y)) scale(var(--scale));
+				cursor: move;
+			}
+		</style>
+		<span slot="title">
+			Gallary
+		</span>
+		<span slot="description">
+			Our happiest moments in picture
+		</span>
+		<dialog>
+			<button style="z-index: 10;">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+			</button>
+			<img>
+		</dialog>
+		<div id="gallary" class="content">
+		</div>
+		<script type="module">
+			const json = await (await fetch('/assets/js/gallary.json')).json();
+			/** @type {string[]} */
+			const photos = json.gallary;
+			const gallary = document.getElementById("gallary");
+
+			import dialogPolyfill from "/assets/js/dialog-polyfill.esm.js";
+			dialogPolyfill.registerDialog(document.querySelector('dialog'));
+
+			/**
+			 * @param {MouseEvent} event
+			 */
+			function enlargeImage(event) {
+				const dialog = document.querySelector('dialog')
+				dialog.showModal();
+				const img = dialog.querySelector('img');
+				img.src = `/assets/images/${event.currentTarget.dataset.image}`;
+
+				const close = dialog.querySelector('button');
+				
+				let mousepos = null;
+				// a translation applied to the image, in terms of CSS pixels
+				// (as opposed to a pixel on the image)
+				let translate = { x: 0, y: 0 };
+				let scale = 1;
+				function applyTransform() {
+					dialog.style.setProperty('--translate-x', `${translate.x}px`);
+					dialog.style.setProperty('--translate-y', `${translate.y}px`);
+					dialog.style.setProperty('--scale', scale.toString());
+				}
+
+				applyTransform();
+				dialog.addEventListener('mousedown', (e) => {
+					e.preventDefault();
+					mousepos = { x: e.x, y: e.y };
+				});
+				dialog.addEventListener('mousemove', (e) => {
+					// if left button is pressed
+					// note: this is a bitfield where 1 represents the main button
+					if (e.buttons == 1) {
+						e.preventDefault();
+						// just in case it isn't initialized
+						if (!mousepos) {
+							mousepos = { x: e.x, y: e.y };
+						}
+						translate.x += e.x - mousepos.x;
+						translate.y += e.y - mousepos.y;
+						mousepos = { x: e.x, y: e.y };
+						applyTransform();
+					}
+				});
+				dialog.addEventListener('mouseup', (e) => {
+					e.preventDefault();
+					mousepos = null;
+					e.stopImmediatePropagation();
+				});
+				
+				dialog.addEventListener('wheel', (e) => {
+					e.preventDefault()
+
+					const maxScale = 8;
+					const minScale = .125;
+					const zoomSpeedConstant = 128;
+					// we cap the scale to [minScale, maxScale], then divide it by scale to get the factor
+					const factor = Math.max(minScale, Math.min(maxScale, scale * Math.pow(2, -e.deltaY / zoomSpeedConstant))) / scale;
+					const prevScale = scale;
+					scale *= factor;
+
+					// We apply a translation to the image such that this happens:
+					// *------------*                *------------*
+					// | [|||||||*] |          [||||||||||||||||*|]
+					// | [||||||||] |   zoom   [||||||||||||||||||]
+					// | [||||||||] |  =====>  [||||||||||||||||||]
+					// |            |          [||||||||||||||||||]
+					// |            |          [||||||||||||||||||]
+					// |            |          [||||||||||||||||||]
+					// |            |                |            |
+					// *------------*                *------------*
+					// where the mouse points to the same position on the image after zooming.
+					//
+					// Please don't ask me how it works now.
+					// It is too complicated to explain in a comment.
+					// I might be able to explain it later when I have time, but not now.
+					const top = img.offsetTop;
+					const height = img.offsetHeight;
+					const left = img.offsetLeft;
+					const width = img.offsetWidth;
+					const middle = {
+						y: top + height/2,
+						x: left + width/2
+					};
+					translate.x = -(((e.x - middle.x) - translate.x) / prevScale * scale - (e.x - middle.x));
+					translate.y = -(((e.y - middle.y) - translate.y) / prevScale * scale - (e.y - middle.y));
+
+					applyTransform();
+				})
+				dialog.addEventListener('close', () => {
+					img.src = "";
+				});
+				close.addEventListener('click', () => {
+					dialog.close();
+				});
+			}
+
+			for (const photo of photos) {
+				const button = document.createElement('button');
+				button.dataset.image = photo;
+				button.title = "Enlarge Image";
+				button.classList.add('preview');
+				button.style.margin = ".5rem";
+
+				const img = document.createElement('img');
+				img.src = `/assets/images/720p/${photo}`;
+				img.height = 256;
+				img.style.height = "var(--image-height)"
+
+				button.appendChild(img);
+				button.addEventListener('click', enlargeImage)
+				gallary.appendChild(button);
+			}
+		</script>
+	</page-layout>
+</body>
+</html>

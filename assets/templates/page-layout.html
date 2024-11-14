@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<style>
+	#page-wrapper {
+		display: flex;
+		min-height: 100dvh;
+		flex-direction: column;
+	}
+	#page-wrapper > *:not(main) {
+		flex: 0 1 auto;
+	}
+	main {
+		/* flex-grow: 1 so it takes up all remaining height even if it don't need that much space */
+		flex: 1 1 auto;
+	}
+
+	a {
+		color: white;
+	}
+</style>
+
+<!-- Page Wrapper -->
+<div id="page-wrapper">
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+	</style>
+
+	<slot name="header">
+		<page-layout-header style="z-index: 999;"></page-layout-header>
+		<div style="height: var(--header-height);"></div>
+		<div style="position: relative;">
+			<img role="presentation" src="/assets/images/1080p/_ECA0989.cropped.JPG" style="width: 100%; object-fit: cover; filter: brightness(40%)" height="256" />
+			<div style="position: absolute; height: 256px; width: 100dvw; top: 0;">
+				<div style="display: flex; flex-direction: column; height: 100%; padding: var(--content-padding); justify-content: center; margin: 0 auto; max-width: var(--max-content-width);">
+					<h1 style="letter-spacing: 2px; margin-top: 0;">
+						<slot name="title"></slot>
+					</h1>
+					<hr style="border: 1px solid var(--border-color); width: 100%;">
+					<p style="font-weight: 600; opacity: .8; font-style: italic; letter-spacing: 1px;">
+						<slot name="description"></slot>
+					</p>
+				</div>
+			</div>
+		</div>
+	</slot>
+
+	<!-- Wrapper -->
+	<main>
+		<slot></slot>
+	</main>
+
+	<!-- Footer -->
+	<page-layout-footer></page-layout-footer>
+
+</div>

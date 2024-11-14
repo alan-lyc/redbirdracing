@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<!-- warning: if you want js here, do it in page-layout.js -->
+<!-- <script> inside here will NOT be executed because setting element.innerHTML doesn't execute scripts -->
+
+<style>
+	@import url('/assets/css/main.css');
+
+	@media screen and (max-width: 872px) {
+		.address-and-copyright {
+			flex-direction: column;
+			/* text-align: center; */
+			gap: 1rem;
+		}
+	}
+
+	@media screen and (min-width: 872px) {
+		.address-and-copyright {
+			flex-direction: row;
+		}
+	}
+
+	/* the container contains: [(logo and sitemap) and social media] */
+	/* it is the top part of the footer, so footer-top-container */
+	.footer-top-container {
+		display: flex;
+		align-items: center;
+	}
+
+	@media screen and (max-width: 756px) {
+
+		/* place the social media below the logo and sitemap */
+		.footer-top-container {
+			flex-direction: column;
+			justify-content: center;
+			gap: 2rem;
+			padding-top: 1rem;
+		}
+	}
+
+	@media screen and (min-width: 757px) {
+
+		/* place the social media on the right */
+		.footer-top-container {
+			justify-content: space-between;
+			padding: 0rem 2rem;
+			gap: 2rem;
+		}
+	}
+
+	@media screen and (max-width: 340px) {
+		#footer-logo {
+			width: 128px;
+			height: 128px;
+		}
+	}
+
+	#logo-and-sitemap {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	@media (max-width: 756px) {
+		#logo-and-sitemap {
+			gap: 1rem;
+		}
+	}
+
+	#sitemap-container {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		min-width: 0px;
+	}
+
+	@media screen and (max-width: 448px) {
+		#sitemap-container {
+			flex-direction: column;
+		}
+	}
+
+	/* the sitemap in the bottom is split into two parts, .sitemap-side applies to each part */
+	.sitemap-side>* {
+		/* disable text wrap */
+		min-width: max-content;
+	}
+
+	.sitemap-side {
+		display: flex;
+		flex-wrap: nowrap;
+	}
+
+	@media screen and (max-width: 756px) {
+		.sitemap-side {
+			flex-direction: column;
+			gap: 1rem;
+		}
+	}
+
+	@media screen and (min-width: 757px) {
+		.sitemap-side {
+			flex-direction: row;
+			gap: 2rem;
+		}
+	}
+
+	a {
+		color: white;
+	}
+</style>
+
+<footer id="footer" style="background-color: black; padding: 1rem; overflow: hidden;">
+	<div class="inner">
+		<!-- <h2 class="major">Get in touch</h2> -->
+		<!-- <p>Want to know more about us? Having any questions? Feel free to contact us via email and social media.</p> -->
+		<div class="footer-top-container">
+			<div id="logo-and-sitemap">
+				<img id="footer-logo" src="/assets/images/logo.720p.png" alt="HKUST Red Bird Racing Logo" width="196px"
+					style="min-width: 150px; margin: -2rem 0px;">
+				<div id="sitemap-container">
+					<div class="sitemap-side" style="margin-right: 1rem;">
+						<a href="about.html">About Us</a>
+						<a href="gallery.html">Gallery</a>
+						<a href="news.html">News</a>
+					</div>
+					<div class="sitemap-side">
+						<a href="partners.html">Partners</a>
+						<a href="contact.html">Contact Us</a>
+					</div>
+				</div>
+			</div>
+			<div style="display: flex; gap: 1rem;">
+				<a href="https://hk.linkedin.com/company/hkust-red-bird-racing-evrt" target="_blank"
+					aria-label="LinkedIn">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						class="lucide lucide-linkedin">
+						<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+						<rect width="4" height="12" x="2" y="9" />
+						<circle cx="4" cy="4" r="2" />
+					</svg>
+				</a>
+				<a href="https://www.facebook.com/HKUST-Red-Bird-Racing-EVRT-102382105550032/" target="_blank"
+					aria-label="Facebook">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						class="lucide lucide-facebook">
+						<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+					</svg>
+				</a>
+				<a href="https://www.instagram.com/red.bird.racing_hkust/" target="_blank" aria-label="Instagram">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						class="lucide lucide-instagram">
+						<rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+						<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+						<line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+					</svg>
+				</a>
+				<a href="https://www.youtube.com/channel/UCkfSiL8lR4T82OY4_Po6ZTA/featured" target="_blank"
+					aria-label="YouTube" style="margin: 0px .25rem;">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						class="lucide lucide-youtube">
+						<path
+							d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+						<path d="m10 15 5-3-5-3z" />
+					</svg>
+				</a>
+			</div>
+		</div>
+		<hr style="border-color: rgb(42, 42, 42); border-width: .5px; margin-top: 1.5rem; margin-bottom: 1rem;" />
+		<div class="address-and-copyright"
+			style="display: flex; justify-content: space-between; font-size: smaller; align-items: center; color: gray; padding: 0px 1rem; padding-bottom: .25rem;">
+			<a href="https://www.google.com.hk/maps/place/HKUST/@22.3368027,114.2650534,17z/data=!3m1!4b1!4m5!3m4!1s0x34040545075eaaf9:0x5d48c86eccf61007!8m2!3d22.3367978!4d114.2672421?hl=zh-TW"
+				target="_blank" style="display: flex; color: gray; align-items: center;">
+				<svg style="transform: scale(.75) translateX(-4px);" xmlns="http://www.w3.org/2000/svg" width="24"
+					height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+					stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin">
+					<path
+						d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+					<circle cx="12" cy="10" r="3" />
+				</svg>
+				<span style="margin-left: .25rem; line-height: 1.4em; min-height: 20px; min-width: 20px;">
+					The Hong Kong University of Science and Technology <br />
+					Clear Water Bay, Kowloon, Hong Kong
+				</span>
+			</a>
+			<div style="display: flex; align-items: center; gap: .5rem;">
+				<span style="font-size: 1.2em; font-weight: 250;">&copy;</span>
+				<span style="display: flex; flex-wrap: wrap; line-height: 1.3em;">
+					<span style="word-wrap: none;">2024 HKUST Red Bird Racing (EVRT).&nbsp;</span>
+					<span style="word-wrap: none;">All Rights Reserved.</span>
+				</span>
+			</div>
+		</div>
+	</div>
+</footer>

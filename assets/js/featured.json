@@ -1,0 +1,43 @@
+{
+	"featured": [
+		{
+			"thumbnail": {
+				"type": "image",
+				"link": "/assets/images/news/orientation2022.png",
+				"alt": "HKUST Red Bird Racing Team New Member Orientation Day 2022"
+			},
+			"title": "New Member Orientation Day 2022",
+			"description": "Orientation day for new recruits",
+			"link": "/news/orientation2022.html"
+		},
+		{
+			"thumbnail": {
+				"type": "image",
+				"link": "/assets/images/news/fshk.png",
+				"alt": "Hong Kong Inter-University Formula Student Alliance"
+			},
+			"title": "FSHK",
+			"description": "Hong Kong Inter-University Formula Student Alliance",
+			"link": "/news/fshk.html"
+		},
+		{
+			"thumbnail": {
+				"type": "image",
+				"link": "/assets/images/news/small_announcement.jpg",
+				"alt": "Small Announcement"
+			},
+			"title": "Small Announcement",
+			"description": "Small Announcement",
+			"link": "/news/small_announcement.html"
+		},
+		{
+			"thumbnail": {
+				"type": "youtube",
+				"link": "https://www.youtube.com/watch?v=jQWMarzjAxI"
+			},
+			"title": "Gen 3 Road test",
+			"description": "RBR-3 Official Road Test",
+			"link": "https://www.youtube.com/watch?v=jQWMarzjAxI"
+		}
+	]
+}

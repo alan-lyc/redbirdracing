@@ -1,0 +1,45 @@
+{
+	"platinum": [
+		{
+			"name": "The Hong Kong University of Science and Technology",
+			"image": "/assets/images/sponsors/UST.png",
+			"link": "https://hkust.edu.hk"
+		},
+		{
+			"name": "School of Engineering, HKUST",
+			"image": "/assets/images/sponsors/SENG.png",
+			"link": "https://seng.hkust.edu.hk/"
+		},
+		{
+			"name": "Altium",
+			"image": "/assets/images/sponsors/Altium.png",
+			"link": "https://www.altium.com/"
+		}
+	],
+	"gold": [
+		{
+			"name": "CLP Power Hong Kong",
+			"image": "/assets/images/sponsors/CLP.png",
+			"link": "https://www.clp.com.hk/en/index"
+		}
+	],
+	"silver": [
+		{
+			"name": "Coroflex",
+			"image": "/assets/images/sponsors/Coroflex.png",
+			"link": "https://www.coroflex-cable.com/en/"
+		},
+		{
+			"name": "PWR Advanced Cooling Technologies",
+			"image": "/assets/images/sponsors/PWR.png",
+			"link": "https://www.pwr.com.au/"
+		}
+	],
+	"bronze": [
+		{
+			"name": "BOSCH",
+			"image": "/assets/images/sponsors/BOSCH.png",
+			"link": "https://www.bosch.com/"
+		}
+	]
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="assets/js/components.js" type="module"></script>
+	<link rel="stylesheet" href="/assets/css/main.css">
+	<link rel="icon" type="image/png" href="favicon.png" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" />
+	<title>Contact Us | HKUST Red Bird Racing (EVRT)</title>
+</head>
+<body>
+	<page-layout>
+		<style>
+			.large-contact-details-container {
+				padding: 2rem;
+				flex: 1 1 0px;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+			.large-contact-details-container:first-child {
+				border-right: 1px solid var(--border-color);
+			}
+			.main-contact-method {
+				display: flex;
+				margin-bottom: 1rem;
+			}
+			.social-media > a {
+				display: flex;
+				padding: 1rem;
+				justify-content: space-between;
+				gap: 1rem;
+				text-decoration: none;
+			}
+			.social-media > a:hover {
+				background-color: var(--table-alternate-color);
+				transition: background-color 200ms ease-in-out;
+			}
+			.social-media > a > span:first-child {
+				display: flex;
+				gap: .5rem;
+				align-items: center;
+			}
+			.social-media > a > span:last-child {
+				display: inline-flex;
+				align-items: center;
+				text-align: right;
+			}
+			.social-media > a:not(:last-child) {
+				border-bottom: 1px solid var(--border-color);
+			}
+			@media screen and (max-width: 640px) {
+				.main-contact-method {
+					flex-direction: column;
+					margin-bottom: 0;
+				}
+				.large-contact-details-container {
+					padding: 2rem 0;
+					flex: 1 1 0px;
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+				}
+				.large-contact-details-container:first-child {
+					border-right: none;
+					border-bottom: 1px solid var(--border-color);
+				}
+				.large-contact-details-container > h2 {
+					margin-top: 0;
+				}
+				.social-media > a > span {
+					font-size: .9rem;
+				}
+			}
+		</style>
+		<span slot="title">
+			Contact Us
+		</span>
+		<span slot="description">
+			Want to know more about us? Having any questions? Feel free to contact us with these methods
+		</span>
+		<div class="content">
+			<h3 style="margin-top: 0px;">Send Us a Message</h3>
+			<div class="main-contact-method" style="display: flex;">
+				<div class="large-contact-details-container">
+					<h2 style="display: flex; align-items: center; gap: .5rem;">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+						Mail
+					</h2>
+					<a href="mailto://redbirdracinghkustevrt@gmail.com">redbirdracinghkustevrt@gmail.com</a>
+				</div>
+				<div class="large-contact-details-container">
+					<h2 style="display: flex; align-items: center; gap: .5rem;">
+						<img src="/assets/images/whatsapp-svgrepo-com.svg" role="presentation" height="24" width="24">
+						WhatsApp
+					</h2>
+					<span>+852 xxxx xxxx</span>
+				</div>
+			</div>
+			<!-- <hr style="border-color: var(--border-color); border-width: .5px;"> -->
+			<div class="social-media">
+				<h3>Social Media</h3>
+				<a href="https://hk.linkedin.com/company/hkust-red-bird-racing-evrt" style="margin-top: -.5rem;">
+					<span>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+						LinkedIn
+					</span>
+					<span>HKUST Red Bird Racing (EVRT)</span>
+				</a>
+				<a href="https://www.instagram.com/red.bird.racing_hkust/">
+					<span>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+						Instagram
+					</span>
+					<span>@red.bird.racing_hkust</span>
+				</a>
+				<a href="https://www.facebook.com/HKUST-Red-Bird-Racing-EVRT-102382105550032/">
+					<span>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+						Facebook
+					</span>
+					<span>HKUST Red Bird Racing - EVRT</span>
+				</a>
+			</div>
+		</div>
+	</page-layout>
+</body>
+</html>
