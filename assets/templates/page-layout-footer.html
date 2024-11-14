@@ -6,14 +6,21 @@
 <style>
 	@import url('/assets/css/main.css');
 
+	.address-and-copyright {
+		display: flex; 
+		justify-content: space-between; 
+		font-size: smaller; 
+		align-items: center; 
+		color: gray; 
+		padding: 0px 1rem; 
+		padding-bottom: .25rem;
+	}
 	@media screen and (max-width: 872px) {
 		.address-and-copyright {
 			flex-direction: column;
-			/* text-align: center; */
 			gap: 1rem;
 		}
 	}
-
 	@media screen and (min-width: 872px) {
 		.address-and-copyright {
 			flex-direction: row;
@@ -112,12 +119,16 @@
 
 <footer id="footer" style="background-color: black; padding: 1rem; overflow: hidden;">
 	<div class="inner">
-		<!-- <h2 class="major">Get in touch</h2> -->
-		<!-- <p>Want to know more about us? Having any questions? Feel free to contact us via email and social media.</p> -->
 		<div class="footer-top-container">
 			<div id="logo-and-sitemap">
-				<img id="footer-logo" src="/assets/images/logo.720p.png" alt="HKUST Red Bird Racing Logo" width="196px"
-					style="min-width: 150px; margin: -2rem 0px;">
+				<!-- the -2rem margin-y is because the logo leaves too much space -->
+				<img 
+					id="footer-logo" 
+					src="/assets/images/logo.720p.png" 
+					alt="HKUST Red Bird Racing Logo" 
+					width="196px"
+					style="min-width: 150px; margin: -2rem 0px;"
+				>
 				<div id="sitemap-container">
 					<div class="sitemap-side" style="margin-right: 1rem;">
 						<a href="/about.html">About Us</a>
@@ -131,8 +142,11 @@
 				</div>
 			</div>
 			<div style="display: flex; gap: 1rem;">
-				<a href="https://hk.linkedin.com/company/hkust-red-bird-racing-evrt" target="_blank"
-					aria-label="LinkedIn">
+				<a 
+					href="https://hk.linkedin.com/company/hkust-red-bird-racing-evrt" 
+					target="_blank"
+					aria-label="LinkedIn"
+				>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
 						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
 						class="lucide lucide-linkedin">
@@ -141,8 +155,11 @@
 						<circle cx="4" cy="4" r="2" />
 					</svg>
 				</a>
-				<a href="https://www.facebook.com/HKUST-Red-Bird-Racing-EVRT-102382105550032/" target="_blank"
-					aria-label="Facebook">
+				<a 
+					href="https://www.facebook.com/HKUST-Red-Bird-Racing-EVRT-102382105550032/" 
+					target="_blank"
+					aria-label="Facebook"
+				>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
 						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
 						class="lucide lucide-facebook">
@@ -158,8 +175,13 @@
 						<line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
 					</svg>
 				</a>
-				<a href="https://www.youtube.com/channel/UCkfSiL8lR4T82OY4_Po6ZTA/featured" target="_blank"
-					aria-label="YouTube" style="margin: 0px .25rem;">
+				<!-- from testing giving this a horizontal margin looks better -->
+				<a 
+					href="https://www.youtube.com/channel/UCkfSiL8lR4T82OY4_Po6ZTA/featured" 
+					target="_blank"
+					aria-label="YouTube" 
+					style="margin: 0px .25rem;"
+				>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
 						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
 						class="lucide lucide-youtube">
@@ -171,10 +193,12 @@
 			</div>
 		</div>
 		<hr style="border-color: rgb(42, 42, 42); border-width: .5px; margin-top: 1.5rem; margin-bottom: 1rem;" />
-		<div class="address-and-copyright"
-			style="display: flex; justify-content: space-between; font-size: smaller; align-items: center; color: gray; padding: 0px 1rem; padding-bottom: .25rem;">
-			<a href="https://www.google.com.hk/maps/place/HKUST/@22.3368027,114.2650534,17z/data=!3m1!4b1!4m5!3m4!1s0x34040545075eaaf9:0x5d48c86eccf61007!8m2!3d22.3367978!4d114.2672421?hl=zh-TW"
-				target="_blank" style="display: flex; color: gray; align-items: center;">
+		<div class="address-and-copyright">
+			<a 
+				href="https://www.google.com.hk/maps/place/HKUST/@22.3368027,114.2650534,17z/data=!3m1!4b1!4m5!3m4!1s0x34040545075eaaf9:0x5d48c86eccf61007!8m2!3d22.3367978!4d114.2672421?hl=zh-TW"
+				target="_blank" 
+				style="display: flex; color: gray; align-items: center;"
+			>
 				<svg style="transform: scale(.75) translateX(-4px);" xmlns="http://www.w3.org/2000/svg" width="24"
 					height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
 					stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin">
@@ -187,8 +211,10 @@
 					Clear Water Bay, Kowloon, Hong Kong
 				</span>
 			</a>
+			<!-- the © sign and the text is arranged horizontally -->
 			<div style="display: flex; align-items: center; gap: .5rem;">
 				<span style="font-size: 1.2em; font-weight: 250;">&copy;</span>
+				<!-- wraps when there isn't enough space-->
 				<span style="display: flex; flex-wrap: wrap; line-height: 1.3em;">
 					<span style="word-wrap: none;">2024 HKUST Red Bird Racing (EVRT).&nbsp;</span>
 					<span style="word-wrap: none;">All Rights Reserved.</span>

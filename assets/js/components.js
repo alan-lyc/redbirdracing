@@ -25,7 +25,7 @@ import dialogPolyfill from "./dialog-polyfill.esm.js";
 //     |   <div>
 //     |       <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=GYnAxwkqnuHHNVNE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 //     |       <slot>
-//     |           <!-- this is in the normal DOM -->
+//     |           <!-- this is in the normal (light) DOM -->
 //     |           <button>Click Me</button>
 //     |       </slot>
 //     |   </div>
@@ -49,7 +49,11 @@ class PageLayout extends HTMLElement {
 }
 customElements.define("page-layout", PageLayout);
 
+// the top menu bar
+// a better naming would be like PageLayoutTopBar, but too late to change now
 class PageLayoutHeader extends HTMLElement {
+	// when this attribute is set, the "home page" style is applied
+	// see comments on applyHomePageStyle()
 	static observedAttributes = ["home-page"];
 
 	constructor() {
@@ -80,7 +84,7 @@ class PageLayoutHeader extends HTMLElement {
 					const span = document.createElement('span');
 					span.textContent = currentPageLink2.textContent;
 					span.style.fontWeight = "600";
-					currentPageLink2.replaceWith(span)
+					currentPageLink2.replaceWith(span);
 				}
 
 				/** @type {HTMLDialogElement} */
@@ -94,14 +98,23 @@ class PageLayoutHeader extends HTMLElement {
 					}, 50);
 				};
 				const closeDialog = () => {
+					// hide the dialog by moving it to the left
 					dialog.style.left = `-${dialog.style.width}`;
+					// after the transition ends, close the dialog completely with dialog.close()
+					// if transition-duration is in milliseconds (ms), we remove 'ms'
+					// if transition-duration is in seconds (s), we remove replace 's' with 'e3', i.e convert to milliseconds
 					setTimeout(() => dialog.close(), +getComputedStyle(dialog).transitionDuration.replace('ms', '').replace('s', 'e3'))
 				};
-				shadow.getElementById("header-hamburger").addEventListener('click', () => {
-					console.log('hi')
-					showDialog()
-				});
-				shadow.getElementById("sidebar-back-button").addEventListener('click', closeDialog);
+				shadow
+					.getElementById("header-hamburger")
+					.addEventListener('click', () => {
+						showDialog()
+					});
+				shadow
+					.getElementById("sidebar-back-button")
+					.addEventListener('click', closeDialog);
+				
+				// close the dialog when the user click somewhere outside the actual dialog
 				dialog.addEventListener('click', (event) => {
 					// the <nav> inside the dialog fills the entire visible dialog
 					// if the event target is the dialog, and not the <nav> element,
@@ -119,6 +132,8 @@ class PageLayoutHeader extends HTMLElement {
 			})
 	}
 
+	// this applies a style specific to the home page,
+	// where the logo is not visible and the background of the top bar is transparent
 	applyHomePageStyle() {
 		// the element is not yet loaded
 		if (!this.shadowRoot) return;
