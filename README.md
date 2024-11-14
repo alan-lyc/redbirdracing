@@ -1,21 +1,35 @@
 # redbirdracing.github.io
 
 This is my version of the website
+Except the content, my version is basically completed. I completely rewrote the website, but the site structure is not changed.
+
+Notes:
+1. **I did NOT update the content because I have no idea what events, photos, or news I can put on the website, except the 8 selected photos**
+2. ⁠I didn’t place the photos anywhere except the gallery and the header, because I don’t know what are those photos about 
+3. ⁠ ⁠I didn’t reserve space for “events” because I have absolutely no idea what it will be about 
+4. ⁠i wrote the introductions for the sub-teams but not sure if it’s ok. 
+5. ⁠The about us page might look better if there are more photos
+6. ⁠The home page might be a bit too short
+
+Completed:
+UI update (with same theme)
+news.json
+sponsors.json
+gallery.json
 
 > [!CAUTION]
-> **Tasks not completed**
+> **TODO** (if this version is used)
+> - There is no news
+>   * using 2022 news for now
+> - Current sponsors
+>   * using 2022 sponsors for now
 > - Contact
 >   * what is the Whatsapp of PIC
 > - There is no event
->   * what tf is that
-> - There is no news
->   * using 2022 news instead
 > - The introduction
->   * revise if you want
-> - What does the selected pictures mean
+>   * check to see if it looks ok
+> - What does the selected pictures mean (when is the photo take etc.)
 >   * there is no alt text or description
-> - Current sponsors
->   * using old sponsors instead
 
 ## Potential Improvement
 **If we can use a (meta)framework**, then the website performance and our workflow could potentially be improved. Currently, I am using Web Component to avoid having to copy and paste *every single time* when we change the page layout. However, for code reusability, I used JavaScript to `fetch` the component's source code (e.g. `page-layout.html`) at runtime. This causes a visible layout shift when the component is loaded.
