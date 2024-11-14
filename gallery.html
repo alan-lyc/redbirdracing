@@ -212,6 +212,7 @@
 
 				let distance = 0;
 				dialog.addEventListener('touchstart', (e) => {
+					if (e.target instanceof HTMLButtonElement) return;
 					if (e.touches.length == 1) {
 						e.preventDefault();
 						mousepos = { x: e.touches.item(0).clientX, y: e.touches.item(0).clientY };
@@ -224,6 +225,7 @@
 					} 
 				})
 				dialog.addEventListener('touchmove', (e) => {
+					if (e.target instanceof HTMLButtonElement) return;
 					if (e.touches.length == 1) {
 						e.preventDefault();
 						distance = 0;
@@ -246,6 +248,7 @@
 					}
 				})
 				dialog.addEventListener('touchend', (e) => {
+					if (e.target instanceof HTMLButtonElement) return;
 					if (e.touches.length == 1 || e.touches.length == 2) {
 						e.preventDefault();
 						mousepos = null;
