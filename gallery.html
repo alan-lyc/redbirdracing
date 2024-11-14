@@ -15,11 +15,9 @@
 			.content {
 				display: flex;
 				flex-wrap: wrap;
-				/* justify-content: center; */
 			}
 			
 			.preview {
-				/* border-radius: 8px; */
 				background-color: transparent;
 				appearance: none;
 				padding: 0;
@@ -27,6 +25,9 @@
 				border: none;
 				--image-height: 196px;
 				height: var(--image-height);
+				display: flex;
+				justify-content: center;
+				align-items: center;
 			}
 			.preview {
 				width: calc((100% - 3rem) / 3);
@@ -133,40 +134,30 @@
 					dialog.style.setProperty('--scale', scale.toString());
 				}
 
-				applyTransform();
-				dialog.addEventListener('mousedown', (e) => {
-					e.preventDefault();
-					mousepos = { x: e.x, y: e.y };
-				});
-				dialog.addEventListener('mousemove', (e) => {
-					// if left button is pressed
-					// note: this is a bitfield where 1 represents the main button
-					if (e.buttons == 1) {
-						e.preventDefault();
-						// just in case it isn't initialized
-						if (!mousepos) {
-							mousepos = { x: e.x, y: e.y };
-						}
-						translate.x += e.x - mousepos.x;
-						translate.y += e.y - mousepos.y;
-						mousepos = { x: e.x, y: e.y };
-						applyTransform();
-					}
-				});
-				dialog.addEventListener('mouseup', (e) => {
-					e.preventDefault();
-					mousepos = null;
-					e.stopImmediatePropagation();
-				});
-				
-				dialog.addEventListener('wheel', (e) => {
-					e.preventDefault()
+				applyTransform();	// initialize the transformation
 
+				/**
+				 * @param {{ x: number, y: number }} e
+				 */
+				function drag(e) {
+					// just in case it isn't initialized
+					if (!mousepos) {
+						mousepos = { x: e.x, y: e.y };
+					}
+					translate.x += e.x - mousepos.x;
+					translate.y += e.y - mousepos.y;
+					mousepos = { x: e.x, y: e.y };
+					applyTransform();
+				}
+				/**
+				 * zoom by e.factor at the given position
+				 * @param {{ x: number, y: number, factor: number }} e
+				 */
+				function zoom(e) {
 					const maxScale = 8;
 					const minScale = .125;
-					const zoomSpeedConstant = 128;
 					// we cap the scale to [minScale, maxScale], then divide it by scale to get the factor
-					const factor = Math.max(minScale, Math.min(maxScale, scale * Math.pow(2, -e.deltaY / zoomSpeedConstant))) / scale;
+					const factor = Math.max(minScale, Math.min(maxScale, scale * e.factor)) / scale;
 					const prevScale = scale;
 					scale *= factor;
 
@@ -197,8 +188,80 @@
 					translate.y = -(((e.y - middle.y) - translate.y) / prevScale * scale - (e.y - middle.y));
 
 					applyTransform();
+				}
+
+				dialog.addEventListener('mousedown', (e) => {
+					e.preventDefault();
+					mousepos = { x: e.x, y: e.y };
+				});
+				dialog.addEventListener('mousemove', (e) => {
+					// if left button is pressed
+					// note: this is a bitfield where 1 represents the main button
+					if (e.buttons == 1) {
+						e.preventDefault();
+						drag(e);
+					}
+				});
+				dialog.addEventListener('mouseup', (e) => {
+					e.preventDefault();
+					mousepos = null;
+					e.stopImmediatePropagation();
+				});
+
+				let distance = 0;
+				dialog.addEventListener('touchstart', (e) => {
+					if (e.touches.lengh == 1) {
+						e.preventDefault();
+						mousepos = { x: e.touches.item(0).clientX, y: e.touches.item(0).clientY };
+						distance = 0;
+					} else if (e.touches.length == 2)  {
+						const pos1 = { x: e.touches.item(0).clientX, y: e.touches.item(0).clientY };
+						const pos2 = { x: e.touches.item(1).clientX, y: e.touches.item(1).clientY };
+						distance = sqrt((pos1.x - pos2.x) ** 2 + (pos1.y - pos2.y) ** 2);
+					} 
 				})
+				dialog.addEventListener('touchmove', (e) => {
+					if (e.touches.length == 1) {
+						e.preventDefault();
+						distance = 0;
+						move({ x: e.touches.item(0).clientX, y: e.touches.item(0).clientY });
+					} else if (e.touches.length == 2) {
+						const pos1 = { x: e.touches.item(0).clientX, y: e.touches.item(0).clientY };
+						const pos2 = { x: e.touches.item(1).clientX, y: e.touches.item(1).clientY };
+						const newDistance = sqrt((pos1.x - pos2.x) ** 2 + (pos1.y - pos2.y) ** 2);
+						const mid = { x: (pos1.x + pos2.x) / 2, y: (pos1.y + pos2.y) / 2 };
+						if (distance) {
+							const factor = newDistance / distance;
+							zoom({
+								x: mid.x,
+								y: mid.y,
+								factor
+							});
+						}
+						distance = newDistance;
+					}
+				})
+				dialog.addEventListener('touchend', (e) => {
+					if (e.touches.lengh == 1) {
+						e.preventDefault();
+						mousepos = null;
+					}
+					distance = 0;
+				})
+
+				dialog.addEventListener('wheel', (e) => {
+					e.preventDefault();
+
+					const zoomSpeedConstant = 128;
+					zoom({
+						x: e.x,
+						y: e.y,
+						factor: Math.pow(2, -e.deltaY / zoomSpeedConstant)
+					});
+				});
+
 				dialog.addEventListener('close', () => {
+					// reset the <img> to prevent the old image from being visible for a split second when the user click on another image
 					img.src = "";
 				});
 				close.addEventListener('click', () => {
@@ -206,6 +269,7 @@
 				});
 			}
 
+			/* ====== populate the gallery ====== */
 			for (const photo of photos) {
 				const button = document.createElement('button');
 				button.dataset.image = photo;
