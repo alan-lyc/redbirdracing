@@ -65,6 +65,7 @@
 			}
 			dialog>button {
 				display: flex;
+				justify-content: center;
 				align-items: center;
 				height: 32px;
 				width: 32px;
@@ -226,12 +227,12 @@
 					if (e.touches.length == 1) {
 						e.preventDefault();
 						distance = 0;
-						move({ x: e.touches.item(0).clientX, y: e.touches.item(0).clientY });
+						drag({ x: e.touches.item(0).clientX, y: e.touches.item(0).clientY });
 					} else if (e.touches.length == 2) {
 						e.preventDefault();
 						const pos1 = { x: e.touches.item(0).clientX, y: e.touches.item(0).clientY };
 						const pos2 = { x: e.touches.item(1).clientX, y: e.touches.item(1).clientY };
-						const newDistance = sqrt((pos1.x - pos2.x) ** 2 + (pos1.y - pos2.y) ** 2);
+						const newDistance = Math.sqrt((pos1.x - pos2.x) ** 2 + (pos1.y - pos2.y) ** 2);
 						const mid = { x: (pos1.x + pos2.x) / 2, y: (pos1.y + pos2.y) / 2 };
 						if (distance) {
 							const factor = newDistance / distance;
