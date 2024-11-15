@@ -152,6 +152,18 @@
 				/** @type {SponsorEntry[]} */
 				const list = sponsors[tier];
 				for (const sponsor of list) {
+					// looks like this:
+					// <a href="{sponsor.link}" style="text-decoration: none;" class="image">
+					//     <img src="{sponsor.image}" alt="Logo of {sponsor.name}" height="128">
+					//     <span>{sponsor.name}</span>
+					// </a>
+					// 
+					// -- or --
+					// <div class="image">
+					//     <img src="{sponsor.image}" alt="Logo of {sponsor.name}" height="128">
+					//     <span>{sponsor.name}</span>
+					// </div>
+
 					/** @type {HTMLAnchorElement | HTMLDivElement} */
 					let container;
 					if (sponsor.link) {

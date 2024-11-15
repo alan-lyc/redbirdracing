@@ -242,18 +242,27 @@
 			const featuredNewsContainer = document.getElementById('featured');
 
 			for (const news of featured) {
-				// <div class="card" style="min-width: /* thumbnailWIdth */px;">
-				//   <img ...>
-				//   <h3>title</h3>
-				//   <p>description</p>
-				// </div>
+				// looks like:
+				// <a class="card" href="{news.link}" style="min-width: {thumbnailWidth}px;">
+				//   <img src="{news.thumbnail.link}" alt="{news.thumbnail.alt}" width="{thumbnailWidth}" height="{thumbnailHeight}" style="object-fit: cover;">
+				//   <div class="card-content">
+				//     <h3>{news.title}</h3>
+				//     <hr>
+				//     <p>{news.description}</p>
+				//     <span>Learn More <chevron-right></chevron-right></span>
+				//   </div>
+				// </a>
 				//
 				// -- or --
 				//
-				// <div class="card">
-				//   <iframe src="https://www.youtube.com/embed/..." ...></iframe>
-				//   <h3>title</h3>
-				//   <p>description</p>
+				// <div class="card" style="min-width: {thumbnailWidth}px;">
+				//   <lite-youtube videoid="{news.thumbnail.videoid}"></lite-youtube>
+				//   <a class="card-content" href="{news.link}" target="_blank" style="height: {thumbnailHeight}px; width: {thumbnailWidth}px">
+				//     <h3>{news.title}</h3>
+				//     <hr>
+				//     <p>{news.description}</p>
+				//     <span>Watch <svg>...</svg></span>
+				//   </a>
 				// </div>
 
 				const thumbnailWidth = 288;
@@ -288,6 +297,8 @@
 
 					thumbnail = document.createElement('lite-youtube');
 					thumbnail.setAttribute('videoid', news.thumbnail.videoid);
+					thumbnail.style.width = `${thumbnailWidth}px`;
+					thumbnail.style.height = `${thumbnailHeight}px`;
 
 					cardContent = document.createElement('a');
 					cardContent.href = news.link;
