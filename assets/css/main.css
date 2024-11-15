@@ -10,6 +10,7 @@
 	--border-color: #ffffff66;
 	--content-padding: 1rem 2rem;
 	--header-height: 4rem;
+	--border-radius: 8px;
 }
 
 @media screen and (max-width: 640px) {
@@ -78,4 +79,9 @@ page-layout {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+.rounded {
+	border-radius: var(--border-radius);
+	/* hide everything that overflows out of the rounded border, so it actually look rounded */
+	overflow: hidden;
 }

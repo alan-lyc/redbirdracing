@@ -33,7 +33,7 @@
 		{
 			"thumbnail": {
 				"type": "youtube",
-				"link": "https://www.youtube.com/watch?v=jQWMarzjAxI"
+				"videoid": "jQWMarzjAxI"
 			},
 			"title": "Gen 3 Road test",
 			"description": "RBR-3 Official Road Test",
