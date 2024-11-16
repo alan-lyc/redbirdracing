@@ -39,10 +39,12 @@
 			.sponsors-container {
 				display: flex;
 				justify-content: center;
-				gap: 1rem;
 				flex-wrap: wrap;
 				width: 100%;
 				padding: 1rem 0;
+			}
+			.sponsors-container > *:not(:last-child) {
+				margin-right: .5rem;
 			}
 			.sponsors-container:not(:last-child) {
 				margin-bottom: 2rem;
@@ -68,6 +70,10 @@
 				}
 				.sponsors-container {
 					flex-direction: column;
+				}
+				.sponsors-container > *:not(:last-child) {
+					margin-right: 0;
+					margin-bottom: .5rem;
 				}
 			}
 			.image>img {

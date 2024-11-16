@@ -57,8 +57,10 @@
 				font-size: 1rem;
 				display: inline-flex;
 				align-items: center;
-				gap: .25rem;
 				margin-bottom: .25rem;
+			}
+			#sort > *:not(:last-child) {
+				margin-right: .25rem;
 			}
 
 			#sort-method {
@@ -128,20 +130,24 @@
 			</section>
 		</div>
 
+		<!-- a security measure since we are parsing Markdown code and directly putting it in innerHTML -->
+		<!-- because we manage the markdown ourselves, technically we don't need this, nor do I think our site is anything worth attacking -->
+		<!-- but it never hurts to add more security when it is just a few kb -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.7/purify.min.js"
 			integrity="sha512-BdRNuI8/lsyxkKQVxK1lVtfZshggfXPAwEP+JAOJEKx6Y8SLfcBSRdaWyXQmMxo+wG180uFqXYGjGRL0mh4/Jw=="
 			crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<!-- Markdown parsing. Admittedly it is an overkill, but I don't want to write a parser just to format the title -->
 		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-		<link rel="icon" type="image/x-icon" href="favicon.ico" />
 
 		<script type="module">
 			/**
 			 * @typedef NewsEntry
 			 * @type {object}
-			 * @property {string} date - date of news.
-			 * @property {string} title - title of news.
-			 * @property {string} link - link to details.
+			 * @property {string} date
+			 * @property {string} title
+			 * @property {string} link
 			 */
+
 			import dialogPolyfill from "/assets/js/dialog-polyfill.esm.js";
 
 			const newsJSON = await (await fetch('/assets/js/news.json')).json();
@@ -157,12 +163,6 @@
 				newsEntries.reverse();
 			}
 
-			function domify(html) {
-				const fragment = new DocumentFragment();
-				fragment.innerHTML = html;
-				return fragment;
-			}
-
 			if (newsEntries.length) {
 				// deletes the "no news yet" row
 				[...table.childNodes].forEach((c) => table.removeChild(c));
@@ -170,11 +170,11 @@
 				for (const news of newsEntries) {
 					// looks like:
 					// <tr class="table-row">
-					// 	<td class="table-cell-padding"></td>
-					// 	<td class="table-cell-padding" style="cursor: pointer;"></td>
-					// 	<td class="table-cell-padding">
-					// 		<a style="display: flex; align-items: center; justify-content: center;"></a>
-					// 	</td>
+					//   <td class="table-cell-padding"></td>
+					//   <td class="table-cell-padding" style="cursor: pointer;"></td>
+					//   <td class="table-cell-padding">
+					//     <a style="display: flex; align-items: center; justify-content: center;"></a>
+					//   </td>
 					// </tr>
 					const tr = document.createElement('tr');
 					tr.classList.add('table-row');
@@ -212,6 +212,8 @@
 					tr.appendChild(link);
 					table.appendChild(tr);
 
+					// making <td> clickable is generally bad practice,
+					// but this allows users to click on the title to go to the linked page
 					title.style.cursor = "pointer";
 					title.addEventListener('click', () => a.click());
 				}
@@ -221,17 +223,19 @@
 				if (e.target instanceof HTMLSelectElement) {
 					if (e.target.value == "reverse") {
 						url.searchParams.set('sort', 'reverse');
-						// document.getElementById('sort-method').querySelector(`[value="reverse"]`).selected = true;
-						e.target.value = "normal"
+						// reset the <select>, because if we don't and if the user press the back button, they will see an incorrect value
+						// Base on my testing, this only happens in Firefox. I *think* this is due to bfcache.
+						// I tried a lot of different approaches including onload handlers, but this counterintuitive method is the only one that works
+						e.target.value = "normal";
 					} else {
 						url.searchParams.delete('sort')
-						e.target.value = "reverse"
-						// document.getElementById('sort-method').querySelector(`[value="normal"]`).selected = true;
+						e.target.value = "reverse";
 					}
 					document.location.href = url.href;
 				}
 			})
 			
+			// set the correct option to be displayed (Newest First or Oldest First) when the page first load
 			if (url.searchParams.get('sort') == 'reverse') {
 				document.getElementById('sort-method').querySelector(`[value="reverse"]`).selected = true;
 			} else {

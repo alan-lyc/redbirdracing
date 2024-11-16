@@ -29,6 +29,9 @@
 			.large-contact-details-container > h2 {
 				margin-top: 0;
 			}
+			.large-contact-details-container > h2 > *:first-child {
+				margin-right: .5rem;
+			}
 			.main-contact-method {
 				display: flex;
 				margin-bottom: 1rem;
@@ -37,8 +40,13 @@
 				display: flex;
 				padding: 1rem;
 				justify-content: space-between;
-				gap: 1rem;
 				text-decoration: none;
+			}
+			.social-media > a > span:first-child {
+				margin-right: 1rem;
+			}
+			.social-media > a > span:first-child > svg {
+				margin-right: .5rem;
 			}
 			.social-media > a:hover {
 				background-color: var(--table-alternate-color);
@@ -47,9 +55,9 @@
 			/* the logo and name of the social media */
 			.social-media > a > span:first-child {
 				display: flex;
-				gap: .5rem;
 				align-items: center;
 			}
+			
 			/* the account name */
 			.social-media > a > span:last-child {
 				display: inline-flex;
@@ -90,14 +98,14 @@
 			<h3>Send Us a Message</h3>
 			<div class="main-contact-method" style="display: flex;">
 				<div class="large-contact-details-container">
-					<h2 style="display: flex; align-items: center; gap: .5rem;">
+					<h2 style="display: flex; align-items: center;">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
 						Mail
 					</h2>
 					<a href="mailto://redbirdracinghkustevrt@gmail.com">redbirdracinghkustevrt@gmail.com</a>
 				</div>
 				<div class="large-contact-details-container">
-					<h2 style="display: flex; align-items: center; gap: .5rem;">
+					<h2 style="display: flex; align-items: center;">
 						<img src="/assets/images/whatsapp-svgrepo-com.svg" role="presentation" height="24" width="24">
 						WhatsApp
 					</h2>
