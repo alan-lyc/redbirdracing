@@ -17,8 +17,21 @@ news.json
 sponsors.json
 gallery.json
 
+## Project Structure
+- Everything other than the pages themselves are inside `assets/`
+- `assets` contains `js`, `images`, and `css`
+- `js` also contains the json files
+- `images` contains other images and the 8 original photos (re-encoded with ffmpeg), as well as the 720p, 1080p, and 1440p versions of those photos. Currently, for photos that are loaded with the page, only the 720p version is used. This ***significantly*** reduces download size.
+
+## HTML Template
+- Each html starts from a template containint `<head>` and `<body>`. Except the title and other `<script>`s, this should be the same for every page.
+- The `<body>` contains a `<page-layout>`, which contains the page content
+- The page content contains a `<style>`, which is the style for that page. I decided *against* using another CSS file for per-page styles for performance, because it leads to another network request, and therefore another 150-300ms of latency (according to lighthouse).
+- The page content contains a `<span name=title>` and `<span name=description>`, which is the title and description rendered in the header (not to be confused with the `page-layout-header`, which is just the top menu bar).
+
+## Todo
 > [!CAUTION]
-> **TODO** (if this version is used)
+> if this version is used:
 > - There is no news
 >   * using 2022 news for now
 > - Current sponsors
